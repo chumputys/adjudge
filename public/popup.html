@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  :root {
+    color-scheme: light;
+    --surface-1: #fcfcfb;
+    --page: #f9f9f7;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --border: rgba(11, 11, 11, 0.10);
+    --series-1: #2a78d6;
+    --series-wash: rgba(42, 120, 214, 0.14);
+    --good: #006300;
+    --critical: #d03b3b;
+    --track: rgba(11, 11, 11, 0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --surface-1: #1a1a19;
+      --page: #0d0d0d;
+      --text-primary: #ffffff;
+      --text-secondary: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --border: rgba(255, 255, 255, 0.10);
+      --series-1: #3987e5;
+      --series-wash: rgba(57, 135, 229, 0.18);
+      --good: #0ca30c;
+      --track: rgba(255, 255, 255, 0.07);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    width: 340px;
+    margin: 0;
+    padding: 0;
+    background: var(--page);
+    color: var(--text-primary);
+    font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px 10px;
+  }
+  .mark {
+    width: 18px; height: 18px; border-radius: 5px;
+    background: var(--series-1);
+    display: grid; place-items: center;
+    color: #fff; font-size: 11px; font-weight: 700;
+  }
+  .name { font-weight: 650; letter-spacing: -0.01em; }
+  .state {
+    margin-left: auto; display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; color: var(--text-secondary);
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--good); }
+  .dot.off { background: var(--critical); }
+
+  section {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin: 0 12px 10px;
+    padding: 14px;
+  }
+
+  .hero-value {
+    font-size: 38px; line-height: 1.05; font-weight: 680; letter-spacing: -0.03em;
+  }
+  .hero-label { color: var(--text-secondary); font-size: 12px; margin-top: 2px; }
+  .hero-delta { color: var(--good); font-size: 12px; font-weight: 600; margin-top: 6px; }
+
+  .spark { margin-top: 10px; position: relative; }
+  .spark svg { display: block; width: 100%; height: 56px; overflow: visible; }
+  .axis { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-top: 4px; }
+  .tip {
+    position: absolute; pointer-events: none; opacity: 0;
+    transform: translate(-50%, -100%);
+    background: var(--text-primary); color: var(--surface-1);
+    font-size: 11px; font-weight: 600; white-space: nowrap;
+    padding: 4px 7px; border-radius: 6px; transition: opacity .1s;
+  }
+
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 0 12px 10px; }
+  .tile { background: var(--surface-1); padding: 11px 10px; }
+  .tile .v { font-size: 17px; font-weight: 650; letter-spacing: -0.02em; }
+  .tile .k { font-size: 10px; color: var(--text-secondary); margin-top: 2px; line-height: 1.25; }
+
+  .title { font-size: 11px; font-weight: 650; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
+  .host-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .host-row:last-child { margin-bottom: 0; }
+  .host-name { font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .host-n { font-size: 11px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+  .bar-track { grid-column: 1 / -1; height: 5px; border-radius: 3px; background: var(--track); overflow: hidden; margin-top: -3px; }
+  .bar { height: 100%; border-radius: 0 3px 3px 0; background: var(--series-1); transition: width .35s ease; }
+
+  .row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--border); }
+  .row:first-of-type { border-top: 0; }
+  .row span { flex: 1; font-size: 12px; }
+  .switch { position: relative; width: 34px; height: 20px; flex: none; }
+  .switch input { opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .slider { position: absolute; inset: 0; border-radius: 999px; background: var(--track); transition: background .15s; pointer-events: none; }
+  .slider::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--surface-1); box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: transform .15s; }
+  .switch input:checked + .slider { background: var(--series-1); }
+  .switch input:checked + .slider::after { transform: translateX(14px); }
+
+  footer { display: flex; gap: 8px; padding: 2px 12px 14px; }
+  footer button {
+    flex: 1; padding: 7px; font: inherit; font-size: 12px; cursor: pointer;
+    color: var(--text-secondary); background: var(--surface-1);
+    border: 1px solid var(--border); border-radius: 9px;
+  }
+  footer button:hover { color: var(--text-primary); }
+  .empty { color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+  <header>
+    <div class="mark">A</div>
+    <div class="name">adjudge</div>
+    <div class="state"><span class="dot" id="dot"></span><span id="stateText">active</span></div>
+  </header>
+
+  <section>
+    <div class="hero-value" id="heroValue">0</div>
+    <div class="hero-label">requests blocked</div>
+    <div class="hero-delta" id="heroDelta"></div>
+
+    <div class="spark">
+      <svg id="spark" viewBox="0 0 286 56" aria-label="Requests blocked over the last 14 days"></svg>
+      <div class="tip" id="tip"></div>
+    </div>
+    <div class="axis"><span id="axisStart"></span><span id="axisEnd">today</span></div>
+  </section>
+
+  <div class="tiles">
+    <div class="tile"><div class="v" id="tHosts">0</div><div class="k">ad hosts<br />learned</div></div>
+    <div class="tile"><div class="v" id="tHidden">0</div><div class="k">sponsored<br />blocks hidden</div></div>
+    <div class="tile"><div class="v" id="tBytes">0</div><div class="k">est. data<br />saved</div></div>
+  </div>
+
+  <section id="hostsCard">
+    <div class="title">Most blocked</div>
+    <div id="hosts"><div class="empty">Nothing blocked yet.</div></div>
+  </section>
+
+  <section>
+    <div class="row"><span id="siteLabel">Block on this site</span>
+      <label class="switch"><input type="checkbox" id="siteOn" /><span class="slider"></span></label>
+    </div>
+    <div class="row"><span>Block popups &amp; redirects here</span>
+      <label class="switch"><input type="checkbox" id="popupOn" /><span class="slider"></span></label>
+    </div>
+  </section>
+
+  <footer>
+    <button id="rescan">Rescan page</button>
+    <button id="options">Settings</button>
+  </footer>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

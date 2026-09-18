@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>adjudge — Settings</title>
+  <style>
+    body { font: 14px/1.5 system-ui, sans-serif; margin: 0; padding: 32px; max-width: 620px; color: #111; }
+    h1 { font-size: 18px; margin: 0 0 24px; }
+    label { display: block; margin: 16px 0 4px; font-weight: 600; }
+    input[type=text], input[type=password], textarea { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font: inherit; box-sizing: border-box; }
+    textarea { height: 80px; resize: vertical; }
+    .row { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
+    .row label { margin: 0; font-weight: 400; }
+    .hint { color: #666; font-size: 12px; margin-top: 4px; }
+    button { margin-top: 24px; padding: 8px 16px; border: 0; border-radius: 6px; background: #111; color: #fff; font: inherit; cursor: pointer; }
+    #status { margin-left: 12px; color: #0a7; }
+  </style>
+</head>
+<body>
+  <h1>adjudge</h1>
+
+  <label for="apiKey">Vercel AI Gateway API key</label>
+  <input id="apiKey" type="password" placeholder="vck_..." autocomplete="off" />
+  <div class="hint">Stored locally in this browser only. Get one at vercel.com → AI Gateway → API Keys.</div>
+
+  <label for="model">Model</label>
+  <input id="model" type="text" />
+  <div class="hint">Default: typesafe-ai/jev</div>
+
+  <div class="row"><input id="enabled" type="checkbox" /><label for="enabled">Enabled</label></div>
+  <div class="row"><input id="blockNetwork" type="checkbox" /><label for="blockNetwork">Block ad &amp; tracker requests</label></div>
+  <div class="row"><input id="hideElements" type="checkbox" /><label for="hideElements">Hide sponsored blocks in the page</label></div>
+  <div class="row"><input id="hideSitePromos" type="checkbox" /><label for="hideSitePromos">Also hide newsletter / app-install / paywall nags</label></div>
+  <div class="row"><input id="blockPopunders" type="checkbox" /><label for="blockPopunders">Block popups and click-hijack redirects</label></div>
+  <div class="hint">Stops a click on a real control — a play button, a quality selector — from opening an ad tab, and defuses transparent overlay links.</div>
+
+  <label for="adThreshold">Confidence threshold</label>
+  <input id="adThreshold" type="text" />
+  <div class="hint">0–1. Higher blocks less but is safer. Default 0.75.</div>
+
+  <label for="allowlist">Allowlisted sites</label>
+  <textarea id="allowlist" placeholder="example.com&#10;news.site.org"></textarea>
+
+  <label for="popupAllowlist">Sites allowed to open popups</label>
+  <textarea id="popupAllowlist" placeholder="docs.google.com"></textarea>
+
+  <div><button id="save">Save</button> <button id="test" style="background:#fff;color:#111;border:1px solid #ccc">Test key</button><span id="status"></span></div>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>

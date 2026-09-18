@@ -1,0 +1,61 @@
+{
+  "manifest_version": 3,
+  "name": "adjudge",
+  "version": "0.1.0",
+  "description": "An ad blocker with no filter list. Every unknown host, sponsored block and popup is judged in real time by TypeSafe Jev.",
+  "minimum_chrome_version": "120",
+  "permissions": [
+    "declarativeNetRequest",
+    "webRequest",
+    "webNavigation",
+    "storage",
+    "tabs",
+    "alarms"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "shield.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true,
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "options_page": "options.html",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "adjudge"
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "seed",
+        "enabled": true,
+        "path": "rules/seed.json"
+      }
+    ]
+  }
+}

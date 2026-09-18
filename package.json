@@ -1,0 +1,18 @@
+{
+  "name": "adjudge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch"
+  },
+  "dependencies": {
+    "@ai-sdk/gateway": "^4.0.86",
+    "ai": "^7.0.105"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  },
+  "description": "Chrome MV3 ad blocker that judges requests, page blocks and popups with TypeSafe Jev."
+}

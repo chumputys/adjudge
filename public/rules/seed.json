@@ -1,0 +1,14 @@
+[
+  { "id": 1, "priority": 1, "action": { "type": "block" }, "condition": { "requestDomains": ["doubleclick.net"], "domainType": "thirdParty" } },
+  { "id": 2, "priority": 1, "action": { "type": "block" }, "condition": { "requestDomains": ["googlesyndication.com"], "domainType": "thirdParty" } },
+  { "id": 3, "priority": 1, "action": { "type": "block" }, "condition": { "requestDomains": ["googletagservices.com"], "domainType": "thirdParty" } },
+  { "id": 4, "priority": 1, "action": { "type": "block" }, "condition": { "requestDomains": ["adservice.google.com"], "domainType": "thirdParty" } },
+  { "id": 5, "priority": 1, "action": { "type": "block" }, "condition": { "requestDomains": ["adnxs.com"], "domainType": "thirdParty" } },
+  { "id": 6, "priority": 1, "action": { "type": "block" }, "condition": { "requestDomains": ["rubiconproject.com"], "domainType": "thirdParty" } },
+  { "id": 7, "priority": 1, "action": { "type": "block" }, "condition": { "requestDomains": ["criteo.com", "criteo.net"], "domainType": "thirdParty" } },
+  { "id": 8, "priority": 1, "action": { "type": "block" }, "condition": { "requestDomains": ["pubmatic.com"], "domainType": "thirdParty" } },
+  { "id": 9, "priority": 1, "action": { "type": "block" }, "condition": { "requestDomains": ["taboola.com", "outbrain.com"], "domainType": "thirdParty" } },
+  { "id": 10, "priority": 1, "action": { "type": "block" }, "condition": { "requestDomains": ["scorecardresearch.com", "quantserve.com"], "domainType": "thirdParty" } },
+  { "id": 11, "priority": 1, "action": { "type": "block" }, "condition": { "requestDomains": ["amazon-adsystem.com"], "domainType": "thirdParty" } },
+  { "id": 12, "priority": 1, "action": { "type": "block" }, "condition": { "requestDomains": ["casalemedia.com", "openx.net", "33across.com"], "domainType": "thirdParty" } }
+]
