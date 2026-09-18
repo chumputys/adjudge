@@ -30,3 +30,16 @@ export async function putTemplate(key, selectors) {
   t[key] = { selectors, at: Date.now() };
   await chrome.storage.local.set({ [TEMPLATES]: t });
 }
+
+/** Split cached verdicts into what the page shield needs, newest first. */
+export async function getHostSets(limit = 800) {
+  const verdicts = await getHostVerdicts();
+  const ad = [];
+  const allow = [];
+  for (const [host, entry] of Object.entries(verdicts)) {
+    if (!isFresh(entry)) continue;
+    if (entry.kind === 'ad' || entry.kind === 'tracker') ad.push(host);
+    else if (entry.kind === 'functional') allow.push(host);
+  }
+  return { ad: ad.slice(0, limit), allow: allow.slice(0, limit) };
+}

@@ -6,6 +6,7 @@ export const DEFAULTS = {
   hideElements: true,
   hideSitePromos: false,
   blockPopunders: true,
+  debugMode: false,
   popupAllowlist: [],
   adThreshold: 0.75,
   maxBreakage: 1.5,

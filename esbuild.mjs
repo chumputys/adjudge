@@ -4,6 +4,10 @@ import { join } from 'node:path';
 
 const watch = process.argv.includes('--watch');
 
+// A visible build stamp, so which bundle Chrome is actually running is never
+// a guess: it shows on the extension card and in every console line.
+const stamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
 try {
   await rm('dist', { recursive: true, force: true });
 } catch {
@@ -22,8 +26,15 @@ async function copyTree(from, to) {
 }
 await copyTree('public', 'dist');
 
+{
+  const manifest = JSON.parse(await readFile('public/manifest.json', 'utf8'));
+  manifest.version_name = `${manifest.version} · built ${stamp}`;
+  await writeFile('dist/manifest.json', JSON.stringify(manifest, null, 2) + '\n');
+}
+
 const shared = {
   bundle: true,
+  define: { __BUILD__: JSON.stringify(stamp) },
   target: 'chrome120',
   platform: 'browser',
   outdir: 'dist',
@@ -58,4 +69,5 @@ if (watch) {
   }
 } else {
   await Promise.all(configs.map(build));
+  console.log(`\n  build stamp: ${stamp}\n`);
 }

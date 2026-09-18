@@ -2,7 +2,7 @@ import { DEFAULTS, getSettings, setSettings } from './settings.js';
 import { testConnection } from './jev.js';
 
 const fields = ['apiKey', 'model', 'adThreshold'];
-const toggles = ['enabled', 'blockNetwork', 'hideElements', 'hideSitePromos', 'blockPopunders'];
+const toggles = ['enabled', 'blockNetwork', 'hideElements', 'hideSitePromos', 'blockPopunders', 'debugMode'];
 
 const settings = await getSettings();
 for (const f of fields) document.getElementById(f).value = settings[f];
