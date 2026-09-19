@@ -37,16 +37,44 @@ get opened cross-site is checked against Jev before it is allowed to stay.
 
 ## Setup
 
+### Prerequisites
+
+- Node.js 18+ or later
+- npm
+- Google Chrome or Chromium-based browser
+
+### Install dependencies
+
 ```bash
+git clone https://github.com/chumputys/adjudge.git
+cd adjudge
 npm install
+```
+
+### Build the extension
+
+```bash
 npm run build
 ```
 
-Load `dist/` at `chrome://extensions` → Developer mode → Load unpacked.
+This generates the unpacked extension files in the `dist/` directory.
 
-Open Settings, paste a [Vercel AI Gateway](https://vercel.com/ai-gateway/models/jev)
-API key, and press **Test key**. The key is stored in `chrome.storage.local` and
+### Load the extension in Chrome
+
+1. Open Chrome and navigate to `chrome://extensions`.
+2. Turn on Developer mode in the top-right corner.
+3. Click `Load unpacked`.
+4. Select the `dist/` folder inside this project.
+5. The extension card should appear in Chrome.
+
+### Configure the API key
+
+Open the extension settings/options page, then paste a [Vercel AI Gateway](https://vercel.com/ai-gateway/models/jev)
+API key and press **Test key**. The key is stored in `chrome.storage.local` and
 never leaves the browser except as the `Authorization` header on Jev calls.
+
+The extension will not judge requests or page elements until a valid key is
+configured.
 
 ## Settings
 
